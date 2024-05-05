@@ -14,7 +14,7 @@ The main goal of this project was to predict the amount of electricity produced 
 
 ## Repo organisation
 
-**Exploratory Data Analysis (EDA) notebooks**
+**`eda_notebooks`: Exploratory Data Analysis (EDA) notebooks**
 
 - `EDA_target_part1.ipynb` : exploration for the target data, containing correlations analysis and data cleaning for summer time missing values and outliers.
 - `EDA_target_part2.ipynb` : further exploration for the target data, containing analysis of the target distribution w.r.t. the client profile and in the log scale.
@@ -22,20 +22,20 @@ The main goal of this project was to predict the amount of electricity produced 
 - `EDA_client.ipynb` : exploration of the client data, with analysis of the distribution and correlations of the client count and solar panel installed capacity.
 - `EDA_electricity_gas` : exploration of the energy prices data, with analysis of the summer time missing values, distribution and correlation of lagged values with target. 
 
-**Modelling notebooks**
+**`modelling`: Modelling notebooks**
 
 - `FeatureEngineering.ipynb`: use the modules `data_loading` and `featuring_engineering` to load and process the features, see below.
 - `ModelProduction.ipynb`: model building for solar energy production, with the analysis of the correlations between features and features and target and feture importance for a CatBoost model.   
 - `ModelConsumption.ipynb`: model building for electricity consumption, with the analysis of the correlations between features and features and target and feture importance for a CatBoost model.
 
-**Hyperparameter tunning notebooks**
+**`models`: Hyperparameter tunning notebooks**
 
 - `ConsumptionBusinessModelParameterTuing.ipynb` : hyperparameter tuning of a CatBoost model for business electricity consumption.
 - `ConsumptionPrivateModelParameterTuing.ipynb` : hyperparameter tuning of a CatBoost model for private electricity consumption.
 - `ProductionBusinessModelParameterTuing.ipynb` : hyperparameter tuning of a CatBoost model for business solar energy production.
 - `ProductionPrivateModelParameterTuing.ipynb` : hyperparameter tuning of a CatBoost model for private solar energy production.
 
-**Model architecture**
+**`modules`: Model architecture**
 
 - `data_loading.py` : module that loads the feature and target data.
 - `featuring_engineering.py` : module that create new features relevant to our model (see model description below) and join the various dataset.
