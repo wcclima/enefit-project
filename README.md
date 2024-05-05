@@ -14,6 +14,10 @@ The main goal of this project was to predict the amount of electricity produced 
 
 ## Repo organisation
 
+**`app`: App for the model**
+
+- `enefit_prediction.py` : Streamlit app for the prediction model.
+
 **`eda_notebooks`: Exploratory Data Analysis (EDA) notebooks**
 
 - `EDA_target_part1.ipynb` : exploration for the target data, containing correlations analysis and data cleaning for summer time missing values and outliers.
