@@ -1,6 +1,6 @@
 # Predict energy behavior of prosumers
 
-This project was based on the __[Kaggle](https://www.kaggle.com)__ competition __[Enefit - Predict Energy Behavior of Prosumer](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/overview)__, sponsored by __[Eesti Energia](https://www.energia.ee/en/avaleht)__. It was developed during December 2023-XXXX 2024 by __[William Lima](https://www.linkedin.com/in/william-lima-363475160/)__, __[Marco Pichl](https://www.linkedin.com/in/marco-pichl-2b8300226/)__, __[Jannis Weber](https://www.linkedin.com/in/jannis-weber/)__ and __[Rakib Rahman](https://www.linkedin.com/in/rakibur-rahman-phd-18877446/)__. 
+This project was based on the __[Kaggle](https://www.kaggle.com)__ competition __[Enefit - Predict Energy Behavior of Prosumer](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/overview)__, sponsored by __[Eesti Energia](https://www.energia.ee/en/avaleht)__. It was developed during December 2023-Feb 2024 by __[William Lima](https://www.linkedin.com/in/william-lima-363475160/)__, __[Marco Pichl](https://www.linkedin.com/in/marco-pichl-2b8300226/)__, __[Jannis Weber](https://www.linkedin.com/in/jannis-weber/)__ and __[Rakib Rahman](https://www.linkedin.com/in/rakibur-rahman-phd-18877446/)__. 
 
 A preliminary version of this project was presented at __[Spiced Academy](https://www.spiced-academy.com/en/program/data-science)__ Data Science Bootcamp, Berlin, as the final project of three of us (Lima, Pichl and Weber) on 22 January 2024.
 
