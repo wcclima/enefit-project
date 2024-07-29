@@ -42,46 +42,15 @@ The main goal of this project was to predict the amount of electricity produced 
 **`modules`: Model architecture**
 
 - `data_loading.py` : module that loads the feature and target data.
-- `featuring_engineering.py` : module that create new features relevant to our model (see model description below) and join the various dataset.
+- `featuring_engineering.py` : module that cleans the data and creates new features relevant to our model (see model description below) and join the various dataset.
 - `model_building.py` : module responsible for training our model.
 - `mock_api.py` : module that simulates the competition API. It loads new unseen data used to the prediction part of the model.
 
-## Requirements:
-
-- pyenv with Python: 3.9.4
-
-### Environment setup for `macOS`
-
-```BASH
-make setup
-
-#or
-
-pyenv local 3.11.3
-python -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### Environment setup for `WindowsOS`
-
-For `Git-bash` CLI:
-```
-pyenv local 3.11.3
-python -m venv .venv
-source .venv/Scripts/activate
-python.exe -m pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-The `requirements.txt` file contains the libraries needed for EDA and modelling.
-
 ## Data
 
-The raw data used in this project and there detailed documentation can be found in the competition __[website](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/data)__.
+The raw data used in this project and its detailed documentation can be found in the competition __[website](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/data)__.
 
-TO DO
+**`train.csv`**
 
 ## Model
 
