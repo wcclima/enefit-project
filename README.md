@@ -50,7 +50,14 @@ The main goal of this project was to predict the amount of electricity produced 
 
 The raw data used in this project and its detailed documentation can be found in the competition __[website](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/data)__.
 
-**`train.csv`**
+**Target data**
+![cons_prod_series](https://github.com/user-attachments/assets/d4db39e7-106d-45af-b651-ee4d5b299e28)
+![cons_prod_target_dist](https://github.com/user-attachments/assets/abb9f10e-a494-4581-9a08-992565130870)
+
+[`prediction_unit_id` dictionary](https://github.com/wcclima/enefit-project/blob/main/data/prediction_unit_id_dictionary.csv)
+
+**Client data**
+![eic_count_vs_installed_capacity](https://github.com/user-attachments/assets/68c44764-183d-4661-b6d7-830f803ab037)
 
 ## Model
 
