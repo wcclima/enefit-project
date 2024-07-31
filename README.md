@@ -56,8 +56,8 @@ The target dataset consists of the electricity consumption and solar energy prod
 ![cons_prod_series](https://github.com/user-attachments/assets/466a2ce7-8f8e-4372-b2a7-c8b5284a4569)
 *<p align="center"> Plot of the energy consumption (cons) and production (prod) hourly time series for each `prediction_unit_id`. </p>*
 
-The plot of the target distribution aggregated by `prediction_unit_id`'s for energy consumption and energy production shows that both distributions are highly skewed.
-![cons_prod_target_dist](https://github.com/user-attachments/assets/abb9f10e-a494-4581-9a08-992565130870)
+The plot of the target distribution for energy consumption and energy production of both business and private prosumers shows that these distributions are highly skewed.
+![cons_prod_target_dist](https://github.com/user-attachments/assets/402afa75-2ed5-4859-bc7c-eb2f7a7736fe)
 *<p align="center"> Plot of the target distribution for energy consumption and production. </p>*
 
 ### Client data
@@ -69,14 +69,18 @@ For the client data we highlight the `installed_capacity` and `eic_count` featur
 We notice that for solar energy production, and useful quantity is the __[*capacity factor*](https://en.wikipedia.org/wiki/Capacity_factor)__ which is the ratio of the actual energy output for a certain period of time and the photovoltaic installed capacity. Here 1 hour is the relevant period of time, and the relevant capacity factor definition is
 
 $$
-\textrm{capacity factor} = \frac{\textrm{energy output}}{(\textrm{installed capacity})\times (\textrm{1 hour})}.
+\textrm{capacity factor} = \frac{\textrm{hourly energy output}}{(\textrm{installed capacity})\times (\textrm{1 hour})}.
 $$
 
 
 
 ## Model
 
-TO DO
+ - **Method:** We approached the problem of forecasting the hourly electricity consumption and solar energy production of the prosumers as a cross-sectional problem, i.e. we take the target time series as a function of the various feature time series, such as the photovoltaic installed capacity, EIC count, electricity prices, atmospheric temperature, etc. We note that energy consumption and production are very different processes and that consumption and production of businesses and private happen at different scales. For these reasons we choose to model to build four models for each of the combinations of the features `is_consumption` and `is_business`.  
+
+ - **Target preprocessing:** Since the target distributions for energy consumption and production of both business and private prosumers are skewed, it was convenient to  
+
+
 
 ## Results
 
