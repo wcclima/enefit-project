@@ -48,16 +48,31 @@ The main goal of this project was to predict the amount of electricity produced 
 
 ## Data
 
-The raw data used in this project and its detailed documentation can be found in the competition __[website](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/data)__.
+The raw data used in this project and its detailed documentation can be found in the Kaggle competition __[website](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/data)__. The provided dataset contains target, client, historical weather, forecasted weather, gas prices and electricity prices. Below we give a brief overview of the target and client datasets.
 
-**Target data**
-![cons_prod_series](https://github.com/user-attachments/assets/d4db39e7-106d-45af-b651-ee4d5b299e28)
+### Target data
+
+The target dataset consists of the electricity consumption and solar energy production hourly time series of 69 `prediction_unit_id`'s. Each `prediction_unit_id` is a set of prosumers aggregated according to the `county_id`, `product_type` and `is_business` client features. For the complete dictionary between `prediction_unit_id` and these features, see [here](https://github.com/wcclima/enefit-project/blob/main/data/prediction_unit_id_dictionary.csv).
+![cons_prod_series](https://github.com/user-attachments/assets/466a2ce7-8f8e-4372-b2a7-c8b5284a4569)
+*<p align="center"> Plot of the energy consumption (cons) and production (prod) hourly time series for each `prediction_unit_id`. </p>*
+
+The plot of the target distribution aggregated by `prediction_unit_id`'s for energy consumption and energy production shows that both distributions are highly skewed.
 ![cons_prod_target_dist](https://github.com/user-attachments/assets/abb9f10e-a494-4581-9a08-992565130870)
+*<p align="center"> Plot of the target distribution for energy consumption and production. </p>*
 
-[`prediction_unit_id` dictionary](https://github.com/wcclima/enefit-project/blob/main/data/prediction_unit_id_dictionary.csv)
+### Client data
 
-**Client data**
-![eic_count_vs_installed_capacity](https://github.com/user-attachments/assets/68c44764-183d-4661-b6d7-830f803ab037)
+For the client data we highlight the `installed_capacity` and `eic_count` features. The former corresponds to the daily time series for the photovoltaic installed capacity while the latter is the __[Electricity Identification Code](https://en.wikipedia.org/wiki/Energy_Identification_Code)__ (EIC) count, i.e. the number of prosumers, for each `prediction_unit_id` value. Aggregating according to `prediction_unit_id` and discriminating accordinf to the client feature `is_business`, we see that these quantities are strongly correlated, as expected. Hence in the modelling part we should pick one or the other in order to vaid overfitting.
+![installed_capacity_vs_eic_count](https://github.com/user-attachments/assets/015f90b0-771f-4175-b026-c82b7794899e)
+*<p align="center"> Plot of installed capacity versus EIC count for all units. </p>*
+
+We notice that for solar energy production, and useful quantity is the __[*capacity factor*](https://en.wikipedia.org/wiki/Capacity_factor)__ which is the ratio of the actual energy output for a certain period of time and the photovoltaic installed capacity. Here 1 hour is the relevant period of time, and the relevant capacity factor definition is
+
+$$
+\textrm{capacity factor} = \frac{\textrm{energy output}}{(\textrm{installed capacity})\times (\textrm{1 hour})}.
+$$
+
+
 
 ## Model
 
