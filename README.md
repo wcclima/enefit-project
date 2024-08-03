@@ -48,7 +48,7 @@ The main goal of this project was to predict the amount of electricity produced 
 
 ## Data
 
-The raw data used in this project and its detailed documentation can be found in the Kaggle competition __[website](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/data)__. The provided dataset contains target, client, historical weather, forecasted weather, gas prices and electricity prices. (*Note: all provided hourly data are given in EET/EEST timezones, except for the historical weather data which is given in the UTC+3 timezone withou DST.*) Below we give a brief overview of the target and client datasets.
+The raw data used in this project and its detailed documentation can be found in the Kaggle competition __[website](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/data)__. The provided dataset contains target, client, historical weather, forecasted weather, gas prices and electricity prices. (*Note: all provided hourly data are given in EET/EEST timezones, except for the historical weather data which is given in the UTC+3 timezone without DST.*) We note that not all data is available at the same time of when the forecasts are made. This is capture in each dataset by the `data_block_id` feature. Below we give a brief overview of the target and client datasets.
 
 ### Target data
 
@@ -62,17 +62,21 @@ The plot of the target distribution for energy consumption and energy production
 
 ### Client data
 
-For the client data we highlight the `installed_capacity` and `eic_count` features. The former corresponds to the daily time series for the photovoltaic installed capacity while the latter is the __[Electricity Identification Code](https://en.wikipedia.org/wiki/Energy_Identification_Code)__ (EIC) count, i.e. the number of prosumers, for each `prediction_unit_id` value.
+For the client data we highlight the `installed_capacity` and `eic_count` features. The former corresponds to the daily time series for the installed photovoltaic capacity while the latter is the __[Electricity Identification Code](https://en.wikipedia.org/wiki/Energy_Identification_Code)__ (EIC) count, i.e. the number of prosumers, for each `prediction_unit_id` value.
 ![installed_capacity_vs_eic_count](https://github.com/user-attachments/assets/5f61d1bb-a8eb-47c6-afb0-87600c2b32c3)
 *<p align="center"> Plot of installed capacity versus EIC count for all units. </p>*
 
-Aggregating according to `prediction_unit_id` and discriminating according to the client feature `is_business`, we see that these quantities are strongly correlated, as expected. Hence in the modelling part we should pick one or the other in order to vaid overfitting. Moreover, from the higher slope we see that business prosumers have a higher installed photovoltaic capacity per prosumer on average than private prosumers, as expected.  
+Aggregating according to `prediction_unit_id` and discriminating according to the client feature `is_business`, we see that these quantities are strongly correlated, as expected. Hence in the modelling part we should pick one or the other in order to avoid overfitting. Moreover, from the higher slope we see that business prosumers have a higher installed photovoltaic capacity per prosumer on average than private prosumers, as expected.
+
+The client dataset is available with a delay of two days with respect to the target data due to the lack synchroneity of part of the data at the time of the forecasting mentioned above and has to be inputted, see next section. 
 
 ## Model
 
- - **Method:** We approached the problem of forecasting the hourly electricity consumption and solar energy production of the prosumers as a cross-sectional problem, i.e. we take the target time series as a function of the various feature time series, such as the photovoltaic installed capacity, EIC count, electricity prices, atmospheric temperature, etc. We note that energy consumption and production are very different processes and that consumption and production of businesses and private happen at different scales. For these reasons we choose to model to build four models for each of the combinations of the features `is_consumption` and `is_business`.  
+ - **Method:** We approached the problem of forecasting the hourly electricity consumption and solar energy production of the prosumers as a cross-sectional problem, i.e. we take the target time series as a function of the various feature time series, such as the photovoltaic installed capacity, EIC count, electricity prices, atmospheric temperature, etc. We note that energy consumption and production are very different processes and that consumption and production of businesses and private happen at different scales. For these reasons we choose to model to build four models for each of the combinations of the features `is_consumption` and `is_business`.
 
- - **Target preprocessing:** We notice that for solar energy production, and useful quantity is the __[*capacity factor*](https://en.wikipedia.org/wiki/Capacity_factor)__ which is the ratio of the actual energy output for a certain period of time and the photovoltaic installed capacity. Here 1 hour is the relevant period of time, and the relevant capacity factor definition is
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We note that not all data is available at the same time at the time of the forecasting. 
+
+ - **Target preprocessing:** We notice that for solar energy production, and useful quantity is the __[*capacity factor*](https://en.wikipedia.org/wiki/Capacity_factor)__ which is the ratio of the actual energy output for a certain period of time and the installed photovoltaic capacity. Here 1 hour is the relevant period of time, and the relevant capacity factor definition is
 
 $$
 \textrm{capacity factor} = \frac{\textrm{hourly energy production}}{(\textrm{installed capacity})\times (\textrm{1 hour})}.
@@ -88,21 +92,26 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Moreover, since energy consumption and production for both busines and private prosumers are highly skewed, it is convenient have the\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; target in a log scale.
 
-- **Feature Engineering:** We create number of new features which are listed below.
+- **Feature Engineering:** We create number of new features which are listed below and input the client and weather data that are missing at the time of the forecasting.
    - Solar azimuth and altitude: we use the __[suncal](https://pypi.org/project/suncalc/)__ library to create `solar_azimuth` and `solar_altitude` features, relevant for the solar energy production.
    - Categorical time features: we create `hour` (24 categories), `month` (12 categories) and `is_weekend` (`True`/`False`) as categorical features, to capture seasonal effects in energy consumption.
    - Numerical time features: we create the `hour_number` and `day_number` features counting the number of days and hours to capture seasonal effects in energy consumption.
+   - Client features: we input two days of data for the `installed_capacity` and `eic_count` features by interpolating the corresponding daily time series.
    - Holiday features: we create the `is_holiday` and `is_school_holiday` features to flag national holidays and school holidays days in Estonia, for the former we used the __[holidays](https://pypi.org/project/holidays/)__ library and __[this](https://www.holidays-info.com/estonia/school-holidays/)__ reference for the latter.
-   - Lagged electricity prices: we create `euros_per_mwh_{weeks}_weeks_lag` with weekly lag of `weeks` = 4, 8, 12, 16.
-   - Weather features: the weather features are averaged over all the weather station withc each county and for every timestamp. 
-   - New forecasted weather features: we create new features the using forecasted weather dataset so the historical and forecasted weather data are compareble.
+   - Lagged electricity prices: we create `euros_per_mwh_{weeks}_weeks_lag` with weekly lag of `weeks` = 4, 8, 12, 16 and drop `euros_per_mwh` as we assume that the electricity prices influences comsumption and production with some delay.
+   - Forecasted weather features: we create `rain`, `windspeed_10m`, `winddirection_10m`, `shortwave_radiation` and `diffuse_radiation` features and change the scale of the `snowfall`, `cloudcover_[high/medium/low]` features in the forecasted weather dataset so the historical and forecasted weather data are comparable.
+   - Historical weather features: we use the historical weather dataset as features to our model and the forecasted weather dataset whenever inputting is needed. 
+     - The weather features are averaged over all the weather stations within each county and for each timestamp.
+     - The historical weather 
    - Irradiation-temperature feature: we create the `irradiance_over_temperature` feature, relevant for solar energy production, based on this __[thread](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/discussion/468654)__.
    - Cell temperature feature: we create the `cell_temperature_low_efficiency`, `cell_temperature_medium_efficiency` and `cell_temperature_high_efficiency` to model the actual temperature at the solar cell for different efficiencies, see __[here](`cell_temperature_low_efficiency`)__.
    - Demographic feature: we create the `is population_over_100k` to flag counties with higher population, relevant for both energy consumption and production.
-   - Lagged target features: we create `target_{day_lag}_days_lag` and `target_{day_lag}_days_lag_flip_is_cons` with daily lag of `day_lag` = 5, 6, 7, 14, 28, 42; the former  is just the lagged targer while the latter is the lagged target with the `is_consumption` flag flipped.
+   - Lagged target features: we create `target_{day_lag}_days_lag` and `target_{day_lag}_days_lag_flip_is_cons` with daily lag of `day_lag` = 5, 6, 7, 14, 28, 42; the former is just the lagged target while the latter is the lagged target with the `is_consumption` flag flipped.
    - We do not use the gas prices data. 
 
-- **Model Architecture:** TO DO
+- **Model Architecture:**  
+ - Missing data input
+ - 
 
 - **Metric:** TO DO
 
