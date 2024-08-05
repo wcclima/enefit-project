@@ -99,19 +99,23 @@ $$
    - Client features: we input two days of data for the `installed_capacity` and `eic_count` features by interpolating the corresponding daily time series.
    - Holiday features: we create the `is_holiday` and `is_school_holiday` features to flag national holidays and school holidays days in Estonia, for the former we used the __[holidays](https://pypi.org/project/holidays/)__ library and __[this](https://www.holidays-info.com/estonia/school-holidays/)__ reference for the latter.
    - Lagged electricity prices: we create `euros_per_mwh_{weeks}_weeks_lag` with weekly lag of `weeks` = 4, 8, 12, 16 and drop `euros_per_mwh` as we assume that the electricity prices influences comsumption and production with some delay.
-   - Forecasted weather features: we create `rain`, `windspeed_10m`, `winddirection_10m`, `shortwave_radiation` and `diffuse_radiation` features and change the scale of the `snowfall`, `cloudcover_[high/medium/low]` features in the forecasted weather dataset so the historical and forecasted weather data are comparable.
+   - Forecasted weather features: we use the forecasted weather data to input the missig historical weather data at the time of the energy consumption and production forecast. 
+     - The all features are averaged over all the weather stations within each county and for each timestamp.
+     - We create `rain`, `windspeed_10m`, `winddirection_10m`, `shortwave_radiation` and `diffuse_radiation` features and change the scale of the `snowfall` and `cloudcover_[high/medium/low]` features so the historical and forecasted weather datasets are comparable.
    - Historical weather features: we use the historical weather dataset as features to our model and the forecasted weather dataset whenever inputting is needed. 
-     - The weather features are averaged over all the weather stations within each county and for each timestamp.
-     - The historical weather 
+     - The all features are averaged over all the weather stations within each county and for each timestamp.
    - Irradiation-temperature feature: we create the `irradiance_over_temperature` feature, relevant for solar energy production, based on this __[thread](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/discussion/468654)__.
    - Cell temperature feature: we create the `cell_temperature_low_efficiency`, `cell_temperature_medium_efficiency` and `cell_temperature_high_efficiency` to model the actual temperature at the solar cell for different efficiencies, see __[here](`cell_temperature_low_efficiency`)__.
    - Demographic feature: we create the `is population_over_100k` to flag counties with higher population, relevant for both energy consumption and production.
    - Lagged target features: we create `target_{day_lag}_days_lag` and `target_{day_lag}_days_lag_flip_is_cons` with daily lag of `day_lag` = 5, 6, 7, 14, 28, 42; the former is just the lagged target while the latter is the lagged target with the `is_consumption` flag flipped.
    - We do not use the gas prices data. 
 
-- **Model Architecture:**  
- - Missing data input
- - 
+- **Missing data input:** Both the client and historical weather datasets are available with some delay with respect to the the target data and have missing values when the target forecast is made.
+  - Client data missing values: the `installed_capacity` and `eic_count` features are delayed by 2 days with respect to the target data we simply interpolate the missing data. 
+  - Historical weather data missing values: the weather features are delayed by 37 hours with repect to the target; we adopt two strategies to input these values using the forecasted weather data.
+    -  
+
+- **Model Architecture:**  TO DO
 
 - **Metric:** TO DO
 
