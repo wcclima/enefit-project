@@ -111,13 +111,17 @@ $$
    - We do not use the gas prices data. 
 
 - **Missing data input:** Both the client and historical weather datasets are available with some delay with respect to the the target data and have missing values when the target forecast is made.
-  - Client data missing values: the `installed_capacity` and `eic_count` features are delayed by 2 days with respect to the target data we simply interpolate the missing data. 
-  - Historical weather data missing values: the weather features are delayed by 37 hours with repect to the target; we adopt two strategies to input these values using the forecasted weather data.
-    -  
+  - *Client data missing values*: the `installed_capacity` and `eic_count` features are delayed by 2 days with respect to the target data we simply interpolate the missing data.
+  - *Historical weather data missing values*: the weather features are delayed by 37 hours with repect to the target; we adopt two strategies to input these values using the forecasted weather data.
+    - We choose to input the missing values for the `temperature`, `dewpoint`, `rain`, `snowfall`, `windspeed_10m` and `winddirection_10m` features from the forecasted weather dataset.
+    - We choose to train a __[XGBoost](https://xgboost.readthedocs.io/en/stable/)__ model having the forecasted weather dataset as independent variables and the historical `surface_pressure`, `cloudcover_[low/mid/high/total]`, `shortwave_radiation`, `direct_solar_radiation` and `diffuse_radiation` features as dependent variables and then use the the XGBoost model's prediction to inpute the missing values of those historical weather features.  
 
-- **Model Architecture:**  TO DO
+- **Model Architecture:** we train four independent __[CatBoost](https://catboost.ai/)__, one for each of the combinations of energy consumption/production and business/private prosumer. 
 
-- **Metric:** TO DO
+- **Metrics:**
+  - The metric considered for the competition is the *mean absolute error*.
+  - We use the *root mean squared error* as the loss function for each one of the four CatBoost models.
+  - We use the __[Optuna](https://optuna.org/)__ hyperparameter optimisation package with the *mean absolute error* adjusted to a target in a log scale as our evaluation metric.  
 
 ## Results
 
