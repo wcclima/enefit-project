@@ -105,7 +105,7 @@ $$
    - Historical weather features: we use the historical weather dataset as features to our model and the forecasted weather dataset whenever inputting is needed. 
      - The all features are averaged over all the weather stations within each county and for each timestamp.
    - Irradiation-temperature feature: we create the `irradiance_over_temperature` feature, relevant for solar energy production, based on this __[thread](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/discussion/468654)__.
-   - Cell temperature feature: we create the `cell_temperature_low_efficiency`, `cell_temperature_medium_efficiency` and `cell_temperature_high_efficiency` to model the actual temperature at the solar cell for different efficiencies, see __[here](`cell_temperature_low_efficiency`)__.
+   - Cell temperature feature: we create the `cell_temperature_[low/medium.high]_efficiency` to model the actual temperature at the solar cell for different efficiencies, see __[here](`cell_temperature_low_efficiency`)__.
    - Demographic feature: we create the `is population_over_100k` to flag counties with higher population, relevant for both energy consumption and production.
    - Lagged target features: we create `target_{day_lag}_days_lag` and `target_{day_lag}_days_lag_flip_is_cons` with daily lag of `day_lag` = 5, 6, 7, 14, 28, 42; the former is just the lagged target while the latter is the lagged target with the `is_consumption` flag flipped.
    - We do not use the gas prices data. 
