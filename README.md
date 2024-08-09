@@ -107,7 +107,7 @@ $$
    - Irradiation-temperature feature: we create the `irradiance_over_temperature` feature, relevant for solar energy production, based on this __[thread](https://www.kaggle.com/competitions/predict-energy-behavior-of-prosumers/discussion/468654)__.
    - Cell temperature feature: we create the `cell_temperature_[low/medium.high]_efficiency` to model the actual temperature at the solar cell for different efficiencies, see __[here](`cell_temperature_low_efficiency`)__.
    - Demographic feature: we create the `is population_over_100k` to flag counties with higher population, relevant for both energy consumption and production.
-   - Lagged target features: we create `target_{day_lag}_days_lag` and `target_{day_lag}_days_lag_flip_is_cons` with daily lag of `day_lag` = 5, 6, 7, 14, 28, 42; the former is just the lagged target while the latter is the lagged target with the `is_consumption` flag flipped.
+   - Lagged target features: we create `target_{day_lag}_days_lag` and `target_{day_lag}_days_lag_flip_is_cons` with daily lag of `day_lag` = 5, 6, 7, 14, 28, 42; the former is just the lagged target while the latter is the lagged target with the `is_consumption` flag flipped. Hence for the target corresponding to consumption for example, we have the lagged target features corresponding to both consumption and production.
    - We do not use the gas prices data. 
 
 - **Missing data input:** Both the client and historical weather datasets are available with some delay with respect to the the target data and have missing values when the target forecast is made.
