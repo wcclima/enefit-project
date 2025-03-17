@@ -8,7 +8,7 @@ The number of prosumers is rapidly increasing, and solving the problems of energ
 
 ## Objective
 
-The main goal of this project was to predict the amount of electricity produced and consumed by Estonian energy customers who have installed solar panels (prosumer) from weather, energy prices and installed photovoltaic capacity data.
+The main goal of this project is to predict the amount of electricity produced and consumed by Estonian energy customers who have installed solar panels (prosumer) from weather, energy prices and installed photovoltaic capacity data.
 
 ## Repo organisation
 
